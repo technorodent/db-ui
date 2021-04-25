@@ -1,0 +1,236 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>blah</title>
+  <meta name="description" content="blah">
+  <meta name="author" content="blah">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <h1>Unmarshalling</h1>
+<h2>Original XML</h2>
+<pre id="originalXML"></pre>
+<h2>Unmarshalled JS Object</h2>
+<pre id="unmarshalledJS"></pre>
+<hr/>
+<h1>Marshalling</h1>
+<h2>Original JS Object</h2>
+<pre id="originalJS"></pre>
+<h2>Marshalled XML</h2>
+<pre id="marshalledXML"></pre>
+<script src="jsonix-all.js"></script>
+<script>
+var xmlUrl = 'purchaseOrder.xml';
+
+Jsonix.DOM.load(xmlUrl, function(originalXML) {
+    $('#originalXML').text(Jsonix.DOM.serialize(originalXML));
+}, { method : 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+               
+
+var PO = {
+    name: 'PO',
+    typeInfos: [{
+        type: 'classInfo',
+        localName: 'PurchaseOrderType',
+        propertyInfos: [{
+            type: 'element',
+            name: 'shipTo',
+            elementName: 'shipTo',
+            typeInfo: 'PO.USAddress'
+        }, {
+            type: 'element',
+            name: 'billTo',
+            elementName: 'billTo',
+            typeInfo: 'PO.USAddress'
+        }, {
+            type: 'element',
+            name: 'comment',
+            elementName: 'comment',
+            typeInfo: 'String'
+        }, {
+            type: 'element',
+            name: 'items',
+            elementName: 'items',
+            typeInfo: 'PO.Items'
+        }, {
+            name: 'orderDate',
+            typeInfo: 'Calendar',
+            attributeName: 'orderDate',
+            type: 'attribute'
+        }]
+    }, {
+        type: 'classInfo',
+        localName: 'Items',
+        propertyInfos: [{
+            type: 'element',
+            name: 'item',
+            collection: true,
+            elementName: 'item',
+            typeInfo: 'PO.Item'
+        }]
+    }, {
+        type: 'classInfo',
+        localName: 'USAddress',
+        propertyInfos: [{
+            type: 'element',
+            name: 'name',
+            elementName: 'name',
+            typeInfo: 'String'
+        }, {
+            type: 'element',
+            name: 'street',
+            elementName: 'street',
+            typeInfo: 'String'
+        }, {
+            type: 'element',
+            name: 'city',
+            elementName: 'city',
+            typeInfo: 'String'
+        }, {
+            type: 'element',
+            name: 'state',
+            elementName: 'state',
+            typeInfo: 'String'
+        }, {
+            type: 'element',
+            name: 'zip',
+            elementName: 'zip',
+            typeInfo: 'Decimal'
+        }, {
+            name: 'country',
+            typeInfo: 'String',
+            attributeName: 'country',
+            type: 'attribute'
+        }]
+    }, {
+        type: 'classInfo',
+        localName: 'Item',
+        propertyInfos: [{
+            type: 'element',
+            name: 'productName',
+            elementName: 'productName',
+            typeInfo: 'String'
+        }, {
+            type: 'element',
+            name: 'quantity',
+            elementName: 'quantity',
+            typeInfo: 'Int'
+        }, {
+            type: 'element',
+            name: 'usPrice',
+            elementName: 'USPrice',
+            typeInfo: 'Decimal'
+        }, {
+            type: 'element',
+            name: 'comment',
+            elementName: 'comment',
+            typeInfo: 'String'
+        }, {
+            type: 'element',
+            name: 'shipDate',
+            elementName: 'shipDate',
+            typeInfo: 'Calendar'
+        }, {
+            name: 'partNum',
+            typeInfo: 'String',
+            attributeName: 'partNum',
+            type: 'attribute'
+        }]
+    }],
+    elementInfos: [{
+        elementName: 'purchaseOrder',
+        typeInfo: 'PO.PurchaseOrderType'
+    }, {
+        elementName: 'comment',
+        typeInfo: 'String'
+    }]
+};
+// Create Jsonix context
+var context = new Jsonix.Context([PO]);
+
+// Create unmarshaller
+var unmarshaller = context.createUnmarshaller();
+
+unmarshaller.unmarshalURL('purchaseOrder.xml',
+
+function (unmarshalled) {
+    $('#unmarshalledJS').text(JSON.stringify(unmarshalled, null, 2));    
+}, {
+    method: 'GET',
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+    }
+});
+
+var originalJS = {
+    name: {
+        localPart: "purchaseOrder"
+    },
+    value: {
+        orderDate: {
+            year: 1999,
+            month: 10,
+            day: 20
+        },
+        shipTo: {
+            country: "US",
+            name: "Alice Smith",
+            street: "123 Maple Street",
+            city: "Mill Valley",
+            state: "CA",
+            zip: 90952
+        },
+        billTo: {
+            name: "Robert Smith",
+            street: "8 Oak Avenue",
+            city: "Old Town",
+            state: "PA",
+            country: "US",
+            zip: 95819
+        },
+        comment: 'Hurry, my lawn is going wild!',
+        items: {
+            item: [{
+                partNum: "872-AA",
+                productName: "Lawnmower",
+                quantity: 1,
+                usPrice: 148.95,
+                comment: "Confirm this is electric"
+            }, {
+                partNum: '926-AA',
+                productName: 'Baby Monitor',
+                quantity: 1,
+                usPrice: 39.98,
+                shipDate: {
+                    year: 1999,
+                    month: 5,
+                    day: 21
+                }
+            }]
+        }
+    }
+};
+
+$('#originalJS').text(JSON.stringify(originalJS, null, 2));
+
+var marshaller = context.createMarshaller();
+
+var marshalledXML = marshaller.marshalString(originalJS);
+
+$('#marshalledXML').text(marshalledXML);
+
+
+
+
+
+
+</script>
+</body>
+</html>
+

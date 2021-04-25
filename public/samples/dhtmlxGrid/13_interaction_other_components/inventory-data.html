@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<!--pro-->
+<html>
+<head>
+    <title>FORM integration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" type="text/css" href="../../../codebase/fonts/font_roboto/roboto.css" />
+    <link rel="stylesheet" type="text/css" href="../../../codebase/dhtmlx.css" />
+    <script src="../../../codebase/dhtmlx.js"></script>
+    <script>
+      var myGrid;
+
+      function doOnLoad () {
+        var myToolbar;
+        myToolbar = new dhtmlXToolbarObject({
+          parent    : 'toolbarObj',
+          icons_path: '../common/imgs/',
+        });
+
+        var newOpts = Array(Array('new_box', 'obj', 'Cel Box', 'text_document.gif'),
+          Array('new_photo', 'obj', 'Photo Group', 'new_dis.gif'),
+          Array('new_s1', 'sep'),
+          Array('new_other', 'obj', 'Other', 'other.gif'));
+
+        myToolbar.addButtonSelect('new', 0, 'New', newOpts, 'new.gif', 'new_dis.gif');
+        myToolbar.addSeparator('sep1', 1);
+        myToolbar.addButton('open', 2, '', 'open.gif', 'open_dis.gif');
+        myToolbar.addButton('save', 3, '', 'save.gif', 'save_dis.gif');
+        myToolbar.addButton('save_as', 4, 'Save As...', 'save_as.gif', 'save_as_dis.gif');
+        myToolbar.disableItem('save_as');
+        myToolbar.addSeparator('sep2', 5);
+        myToolbar.addButton('undo', 6, '', 'undo.gif', 'undo_dis.gif');
+        myToolbar.addButton('redo', 7, '', 'redo.gif', 'redo_dis.gif');
+        myToolbar.addSeparator('sep3', 8);
+        myToolbar.addButton('cut', 9, 'Cut', 'cut.gif', 'cut_dis.gif');
+        myToolbar.addButton('copy', 10, 'Copy', 'copy.gif', 'copy_dis.gif');
+        myToolbar.addButton('paste', 11, 'Paste', 'paste.gif', 'paste_dis.gif');
+        myToolbar.addSeparator('sep4', 12);
+
+        var printOpts = Array(Array('print_page', 'obj', 'Page', 'page.gif'),
+          Array('print_range', 'obj', 'Page Range', 'page_range.gif'),
+          Array('print_sel', 'obj', 'Selection', 'selection.gif'),
+          Array('print_sep1', 'sep'),
+          Array('print_cfg', 'obj', 'Settings', 'settings.gif'));
+
+        myToolbar.addButtonSelect('print', 13, 'Print', printOpts, 'print.gif', 'print_dis.gif');
+        myToolbar.addSeparator('sep5', 14);
+        myToolbar.addText('info', 15, 'dhtmlxToolbar Demo');
+
+        data = {
+          'rows': [
+            {
+              'id'  : 25,
+              'data': [
+                25,
+                '1121',
+                '1952',
+                'a121',
+                '1952',
+                'Kangaroo w/baby black and white',
+                '31',
+                '31',
+                null,
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 53,
+              'data': [
+                53,
+                '1161',
+                '1952',
+                'a161',
+                '1952',
+                'Man and car (Inked only)',
+                '23',
+                null,
+                null,
+                null,
+                'Inked',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 55,
+              'data': [
+                55,
+                '1163',
+                null,
+                'a163',
+                null,
+                'Borden Bull playing violin to Elsie black and white',
+                '163',
+                '163',
+                null,
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 59,
+              'data': [
+                59,
+                '1168',
+                '1955',
+                'a168',
+                '1955',
+                'Keeblers Club Crackers magicians rabbit black and white',
+                '71',
+                '71',
+                null,
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 66,
+              'data': [
+                66,
+                '1176',
+                '1957',
+                'a176',
+                '1957',
+                'Fisher Flouring Mills Sled Dog Team Ice fishing man & Characters black and white',
+                '86',
+                '88',
+                '2',
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 81,
+              'data': [
+                81,
+                '1214',
+                '1950s',
+                'a214',
+                '1950s',
+                'Purina cow & milking machine black and white',
+                '126',
+                '126',
+                null,
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 87,
+              'data': [
+                87,
+                '1224',
+                '1950s',
+                'a224',
+                '1950s',
+                'Frigidaire Polar Beers on Bicycle black and white',
+                '215',
+                null,
+                null,
+                null,
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 91,
+              'data': [
+                91,
+                '1238',
+                '1950s',
+                'a238',
+                '1950s',
+                'Frigidaire Polar Beer Little polar bear cub black and white',
+                '56',
+                null,
+                null,
+                '1',
+                'black and white',
+                'Sell as a 5 cel set',
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 92,
+              'data': [
+                92,
+                '1240',
+                '1958',
+                'a240',
+                '1958',
+                'Elephant Brand Fertilizer Dancing Elephant black and white',
+                '123',
+                '123',
+                null,
+                '1',
+                'black and white',
+                'Avail. w/storyboard',
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 102,
+              'data': [
+                102,
+                '01250a',
+                '1955',
+                'a250a',
+                '1955',
+                'Kangaroo w/baby in pouch jumps in water; Polar bear; Man & Woman Read',
+                null,
+                '192',
+                null,
+                null,
+                'Paper',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 107,
+              'data': [
+                107,
+                '1257',
+                '1958',
+                'a257',
+                '1958',
+                'Hansen Bread girl w/ cat & picnic basket black and white',
+                '67',
+                '67',
+                null,
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 109,
+              'data': [
+                109,
+                '1260',
+                '1951',
+                'a260',
+                '1951',
+                'RalstoPurina Purina Dogs (Humanized) black and white',
+                '81',
+                '81',
+                null,
+                null,
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 113,
+              'data': [
+                113,
+                '1308',
+                '1950s',
+                'a308',
+                null,
+                'Deerfoot Dan 2 bears Blue Boy Ice cream Calgon box (mainly paper)',
+                '21',
+                null,
+                null,
+                '10 C 2 black and white',
+                'iscolor & black and white',
+                'iscolor Exposure sheets may include other boxes',
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 117,
+              'data': [
+                117,
+                '1312',
+                null,
+                'a312',
+                null,
+                'Purina Rabbit carrying food black and white',
+                '35',
+                null,
+                null,
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 131,
+              'data': [
+                131,
+                '1335',
+                '1960',
+                'a335',
+                '1960',
+                'Southwest National Bank alligator elephant monkey dogs black and white',
+                '50',
+                '50',
+                null,
+                '1',
+                'black and white',
+                'Has Storyboard',
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 133,
+              'data': [
+                133,
+                '1337',
+                '1955',
+                'a337',
+                '1955',
+                'Family car/Football player/ cloud boxing airplane black and white',
+                '86',
+                null,
+                null,
+                null,
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 142,
+              'data': [
+                142,
+                '1354',
+                '1959',
+                'a354',
+                '1959',
+                'Man in chair playing with weiner dog black and white',
+                '20',
+                '20',
+                null,
+                null,
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 143,
+              'data': [
+                143,
+                '1355',
+                '1954',
+                'a355',
+                '1954',
+                'Frigidaire black and white',
+                '83',
+                null,
+                null,
+                null,
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 144,
+              'data': [
+                144,
+                '1356',
+                '1954',
+                'a356',
+                '1954',
+                'Peter Pan BreadKangarooCamel3 bearsSeal on floating IceLion black and white',
+                '53',
+                '245',
+                '1',
+                null,
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 145,
+              'data': [
+                145,
+                '01356A',
+                '1954',
+                'a356a',
+                '1954',
+                'Peter Pan BreadKangarooCamel3 bearsSeal on floating IceLion',
+                null,
+                '245',
+                '1',
+                null,
+                'Paper Only',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 146,
+              'data': [
+                146,
+                '1357',
+                '1952',
+                'a357',
+                '1952',
+                ' Chateau Martini Wine Horse racing on trackblack and white ',
+                '5',
+                '5',
+                '8',
+                null,
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 159,
+              'data': [
+                159,
+                '2115',
+                '1959',
+                'b115',
+                '1959',
+                'Woman in rocker w/camera Pig w/&wo/parka Cowboy w/horse & rope black and white',
+                '35',
+                null,
+                null,
+                null,
+                'iscolor & black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 211,
+              'data': [
+                211,
+                '2218',
+                null,
+                'b218',
+                null,
+                'Bald man with mustache has flat tire on roadster musical notes (8)',
+                '261',
+                null,
+                null,
+                null,
+                'Ink Only',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 213,
+              'data': [
+                213,
+                '2220',
+                null,
+                'b220',
+                null,
+                'Town Talk Bread black and white',
+                '24',
+                '24',
+                null,
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+            {
+              'id'  : 225,
+              'data': [
+                225,
+                '2244',
+                null,
+                'b244',
+                null,
+                'Union Pacific Train 50s homemaker black and white',
+                '10',
+                null,
+                '4',
+                '1',
+                'black and white',
+                null,
+                '',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+              ],
+            },
+          ],
+        };
+
+        var myGrid;
+        //	myGrid.load("../common/data.json","json");
+
+        myGrid = new dhtmlXGridObject('gridbox');
+        myGrid.setImagePath('../../../codebase/imgs/');
+        myGrid.setHeader(
+          'pk_id,box_no,date_col1,box_id,date_col2,keywords,cels,paper,backgrounds,shotsheet,color,comments,ulid_id,parent,child,invoice_id,item_barcode,photo,metadata');
+        myGrid.setInitWidths('150,150,150,150,150,250,150,150,150,150,150,150,150,150,150,150,150,150,150');
+        myGrid.setColAlign(
+          'left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left');
+        myGrid.setColTypes('ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed');
+        myGrid.setColSorting('int,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str');
+        myGrid.init();
+        myGrid.parse(data, 'json');
+        //myGrid.load("../common/grid.xml");
+
+        formData                                = [
+          { type: 'settings', position: 'label-left', labelWidth: 100, inputWidth: 220 },
+          {
+            type: 'fieldset', label: 'Welcome', inputWidth: 'auto', list: [
+              { type: 'input', label: 'Package', name: 'Package', value: '' },
+              { type: 'input', label: 'Version', name: 'Version', value: '' },
+              { type: 'input', label: 'Maintainer', name: 'Maintainer', value: '' },
+              { type: 'input', label: 'Size', name: 'Size', value: '' },
+              { type: 'button', value: 'Load set 1', name: 'set1' },
+              { type: 'button', value: 'Load set 2', name: 'set2' },
+              { type: 'button', value: 'Load set 3', name: 'set3' },
+              { type: 'button', value: 'Save', name: 'send' },
+            ],
+          },
+        ];
+        myForm                                  = new dhtmlXForm('myForm', formData);
+        document.getElementById('demo').onclick = function () {myFunction();};
+
+        function myFunction () {
+          document.getElementById('demo').innerHTML = 'YOU CLICKED ME!';
+          myGrid.clearAll();
+          myGrid.parse(data, 'json');
+        }
+
+        //href="javascript:void(0)" onclick='myGrid.clearAll();alert("old data cleared\nloading new one..."); myGrid.parse(data,"json")'
+      }
+    </script>
+</head>
+<body onload="doOnLoad()">
+<h1>Inventory</h1>
+<p>
+    Edit something in grid and press submit
+</p>
+<div style="height: 32px;">
+    <div id="toolbarObj"></div>
+</div>
+<form action="/poster" method="post" target="result">
+    <table width="100%">
+        <tr>
+            <td>
+                <div id="gridbox" style="width:100%; height:500px; background-color:white;"></div>
+            </td>
+        </tr>
+    </table>
+    <input type="submit">
+</form>
+<div id="myForm"></div>
+<p id="demo">Reload from JSON object</p><br />
+
+</body>
+</html>

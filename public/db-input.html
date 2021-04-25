@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+      const submit = document.getElementById("submit");
+
+      const getFormData = () => {
+        const form = document.getElementById("form");
+        return new FormData(form);
+      }
+
+      const toJson = function(event) {
+        const formData = getFormData();
+        console.log("here");
+        event.preventDefault();
+        let object = {};
+        formData.forEach((value, key) => {
+          if (!Reflect.has(object, key)) {
+            object[key] = value;
+            return;
+          }
+          if (!Array.isArray(object[key])) {
+            object[key] = [object[key]];
+          }
+          object[key].push(value);
+        });
+        let json = JSON.stringify(object);
+        console.log(json);
+      };
+
+      submit.addEventListener("click", toJson);
+    </script>
+</head>
+<body>
+<h2>HTML Forms</h2>
+<label for="animation-select">Animation Entry:</label><br />
+<form id="form">
+    <label for="fParent">Parent (Main) Barcode 1:</label>
+    <input type="text" id="parent" name="fParent" size="75"><br><br>
+    <label for="fChild1">Child 1 Barcode:</label>
+    <input type="text" id="child1" name="fChild1" size="75"><br><br>
+    <label for="fChild2">Child 2 Barcode:</label>
+    <input type="text" id="child2" name="fChild2" size="75"><br><br>
+    <label for="lname">Last name:</label><br>
+    <input type="text" id="lname" name="lname" value="Doe"><br><br>
+    <input type="submit" value="Submit"><button type="submit" id="submit">Save</button>
+</form>
+</body>
+</html>
